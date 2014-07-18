@@ -1,0 +1,29 @@
+.me {
+    margin: 0 !important;
+    text-align: center !important;
+}
+
+.me li {
+    list-style-type: none;
+    text-align: left;
+}
+
+.me li a {
+    margin-left: 15px;
+}
+
+img.no-border {
+    border: 0 !important;
+    box-shadow: none !important;
+    background: none !important;
+}
+
+p.left {
+    text-align: left !important;
+}
+
+/*
+.slides h2 {
+    margin-bottom: 6%;
+}
+*/

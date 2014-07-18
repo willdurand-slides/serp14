@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Domain-Driven Model Inference Applied To Web Applications | William Durand</title>
+        <link rel="stylesheet" href="reveal.js/css/reveal.min.css">
+        <link rel="stylesheet" href="reveal.js/css/theme/simple.css" id="theme">
+        <link rel="stylesheet" href="reveal.js/lib/css/zenburn.css">
+        <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/fix-fontawesome-reveal-js.css">
+        <link rel="stylesheet" href="css/custom.css">
+        <script>
+            document.write('<link rel="stylesheet" href="reveal.js/css/print/' +
+                (window.location.search.match(/print-pdf/gi) ? 'pdf' : 'paper') +
+                '.css" type="text/css" media="print">'
+            );
+        </script>
+    </head>
+    <body>
+        <div class="reveal">
+            <div class="slides">
+                <section>
+                    <h1 class="title">Domain-Driven Model Inference Applied To Web Applications</h1>
+                    <em>Sébastien Salva, <u>William Durand</u> &mdash; July 22, 2014</em>
+
+                    <br>
+                    <img src="images/worldcomp.gif" />
+                </section>
+
+                <section>
+                </section>
+
+                <section>
+                </section>
+
+                <section data-markdown>
+                    <script type="text/template">
+                        ## Thank You.
+
+                        ### Questions?
+
+                        <br>
+                        <br>
+                        <br>
+                        <ul class="me">
+                            <li>
+                                <p><i class="fa fa-globe"></i><a href="http://williamdurand.fr" title="website">williamdurand.fr</a></p>
+                            </li>
+                            <li>
+                                <p><i class="fa fa-github"></i><a href="https://github/willdurand" title="github">github.com/willdurand</a></p>
+                            </li>
+                            <li>
+                                <p><i class="fa fa-twitter"></i><a href="https://twitter.com/couac" title="twitter">twitter.com/couac</a></p>
+                            </li>
+                        </ul>
+                    </script>
+                </section>
+            </div>
+        </div>
+        <script src="reveal.js/lib/js/head.min.js"></script>
+        <script src="reveal.js/js/reveal.min.js"></script>
+        <script>
+            Reveal.initialize({
+                controls: true,
+                progress: true,
+                history: true,
+                center: true,
+                slideNumber: true,
+
+                touch: true,
+                hideAddressBar: true,
+
+                theme: Reveal.getQueryHash().theme,
+                transition: Reveal.getQueryHash().transition || 'concave',
+
+                dependencies: [
+                    { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+                    { src: 'reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                    { src: 'reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                    { src: 'reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+                ]
+            });
+        </script>
+    </body>
+</html>
