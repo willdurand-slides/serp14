@@ -20,16 +20,295 @@
             <div class="slides">
                 <section>
                     <h1 class="title">Domain-Driven Model Inference Applied To Web Applications</h1>
-                    <em>Sébastien Salva, <u>William Durand</u> &mdash; July 22, 2014</em>
+                    <em class="subtitle">Sébastien Salva, <u>William Durand</u> &mdash; July 22, 2014 / SERP'14</em>
 
-                    <br>
-                    <img src="images/worldcomp.gif" />
+                    <p class="sponsors">
+                        <img src="images/worldcomp.png" class="no-border" />
+                        <img src="images/limos.png" class="no-border" />
+                        <img src="images/blaisepascal.png" class="no-border" />
+                        <img src="images/michelin.jpg" class="no-border" />
+                    </p>
+                </section>
+
+                <section data-background="images/chaine-des-puys.jpg">
+                    <img src="images/renaud-lavillenie.jpg" class="fragment lavillenie" />
+                    <img src="images/michelin-hq.jpg" class="fragment michelin-hq" />
                 </section>
 
                 <section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ## Context
+
+                            * 100+ applications running in production
+                            * Not (fully) covered by tests
+                            * Documentation may be outdated
+                            * MUST be maintained!
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            The only way to **ensure stability** while fixing a
+                            bug<br>is to **learn how the application behaves**.
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            A first classic solution is to express these
+                            behaviours with formal models, e.g.  **I**nput
+                            **O**utput **S**ymbolic **T**ransition **S**ystems.
+
+                            <p class="fragment">
+                                <br>
+                                But writing such models is an **heavy task** and **error prone**.
+                            </p>
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            Hence the need for a **model inference approach**.
+                        </script>
+                    </section>
                 </section>
 
                 <section>
+                    <section>
+                        <h2>Model Inference</h2>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            **Inference** is the act or **process of reaching a
+                            conclusion**<br>about something from **known facts**
+                            or evidence.
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            A (human) **domain expert** can deduce the meaning of
+                            an application execution by reading its traces.
+
+                            <p class="fragment">
+                                <br>
+                                <i class="fa fa-lightbulb"></i> What about doing the same, **programmatically**?
+                            </p>
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            An **expert system** is a computer system
+                            that<br>**emulates the decision-making ability of a
+                            human expert**.
+                        </script>
+                    </section>
+                </section>
+
+                <section>
+                    <h2>Model Inference Framework</h2>
+                    <p>
+                        <img src="images/framework.png" class="no-border" />
+                    </p>
+                </section>
+
+                <section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ## Layer 1: Trace Filtering
+
+                            1. Cleaning-up the trace set given as input, removing
+                            **noise**, <br>a.k.a. **irrelevant** traces
+                            2. Transforming "raw" traces into **structured traces**
+
+
+                            <br>
+                            <i class="fa fa-info-circle"></i> _HTTP requests
+                            and responses related to assets<br>(CSS files,
+                            JavaScript files, images) are meaningless._
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ## Structured HTTP Traces
+
+                            <p class="left">
+                                Let&nbsp;&nbsp;`t = req`<sub>`1`</sub>`, resp`<sub>`1`</sub>`, ..., req`<sub>`n`</sub>`, resp`<sub>`n`</sub>&nbsp;&nbsp;
+                                be a raw HTTP trace composed of an alternate sequence of HTTP
+                                request `req`<sub>`i`</sub> and HTTP response `resp`<sub>`i`</sub>.
+                                The structured HTTP trace `σ` of `t` is the sequence
+                                `(a`<sub>`1`</sub>`(p), θ`<sub>`1`</sub>`)...(a`<sub>`n`</sub>`(p), θ`<sub>`n`</sub>`)` where:
+                            </p>
+
+                            * `a`<sub>`i`</sub> is the HTTP verb used to perform the request in `req`<sub>`i`</sub>,
+                            * `p` is the parameter set `{URI, request, response}`,
+                            * `θ`<sub>`i`</sub> is a valuation `p → D`<sub>`p`</sub> which assigns a value to each
+                            variables of `p`. `θ` is deduced from the values extracted from `req`<sub>`i`</sub> and `resp`<sub>`i`</sub>.
+
+                            <p class="left">
+                                The resulting trace set derived from raw traces is denoted `ST`.
+                            </p>
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ## Example
+                            <br>
+
+                                GET("https://github.com/", req0, resp0)
+                                GET("https://github.com/login", ...)
+                                POST("https://github.com/session", ...)
+                                GET("https://github.com/", ...)
+                                GET("https://github.com/willdurand", ...)
+                                GET("https://github.com/willdurand/Geocoder", ...)
+                                POST("https://github.com/logout", ...)
+                                GET("https://github.com/", ...)
+                        </script>
+                    </section>
+                </section>
+
+                <section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ## Layer 2: Transformation Of The Traces Into IOSTSs
+
+                            1. Translating a structured trace set `ST` into a run set `SR`
+                            2. Deriving a first IOSTS <code>&delta;1</code> from `SR`
+
+                            <br>
+                            Based on <code>&delta;1</code>, it should be
+                            possible to generate a different model `M`, but we
+                            must preserve the following relation:
+
+                            `traces(M) = ST`
+                        </script>
+                    </section>
+                    <section>
+                        <h2>Example</h2>
+                        <img src="images/gh-2-1.png" class="no-border"/>
+                    </section>
+                </section>
+
+                <section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ## Layers 3-N: IOSTS Abstraction
+
+                            Composed of rules that emulate the ability of a
+                            human expert<br>to **simplify transitions**, to **analyze
+                            transition syntax** in order<br>to deduce more
+                            meaningful information related to the<br>targeted
+                            application, and to **construct more abstract models**.
+
+                            <br>
+                            Each layer takes an **IOSTS given by the direct lower one**.
+                            It represents the current **base of facts**.
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ## Layer 3
+
+                            Layer 3 contains **low level**, **generic rules**
+                            that<br>can be reused against different applications.
+
+                            <br>
+
+                            #### Example
+
+                                rule "Identify Login Page"
+                                when
+                                    $t: Transition(
+                                        Action == GET,
+                                        Guard.response.content contains('login-form')
+                                    )
+                                then
+                                    modify ($t) { Assign.add("isLoginPage := true") }
+                                end
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ## Layer 3 - Example
+
+                            <img src="images/gh-2-2.png" class="no-border" />
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ## Layer 4
+
+                            Layer 4 allows to infer a more abstract
+                            model<br>composed of **more expressive actions**.
+
+                            <br>
+
+                            #### Example
+
+                                rule "Identify Authentication"
+                                when
+                                    $t1: Transition(Action == GET, Assign contains "isLoginPage:= true",
+                                                    $t1final := Lfinal)
+                                    $t2: Transition(Action == PostRedirection, Linit == $t1lfinal,
+                                                    $t2linit := Linit)
+                                    not  Transition(Linit == $t2linit)
+                                then
+                                    insert(new Transition("Authentication",
+                                        Guard($t1.Guard,$t2.Guard), Assign($t1.Assign, $t2.Assign),
+                                        $t1.Linit, $t2.Lfinal
+                                    ))
+                                    retract($t1)
+                                    retract($t2)
+                                end
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ## Layer 4 - Example
+
+                            <img src="images/gh-2-3.png" class="no-border" />
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ## Need More?
+
+                            <img src="images/gh-2-4.png" class="no-border" />
+                        </script>
+                    </section>
+                </section>
+
+                <section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ## Conclusion
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ## Cons
+
+                            * Writing (and maintaining) rules is harder than expected
+                            * Preserving `traces(M) = ST` is not easy
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ## Pros
+
+                            * Original approach to derive IOSTS models
+                            * It Works™
+                        </script>
+                    </section>
+                </section>
+
+                <section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ## Future Work
+
+                            * Applying such a framework on industrial systems (WIP)
+                            * Generating test cases for regression testing
+                            * Finding a better way to write rules
+                        </script>
+                    </section>
                 </section>
 
                 <section data-markdown>
@@ -37,21 +316,6 @@
                         ## Thank You.
 
                         ### Questions?
-
-                        <br>
-                        <br>
-                        <br>
-                        <ul class="me">
-                            <li>
-                                <p><i class="fa fa-globe"></i><a href="http://williamdurand.fr" title="website">williamdurand.fr</a></p>
-                            </li>
-                            <li>
-                                <p><i class="fa fa-github"></i><a href="https://github/willdurand" title="github">github.com/willdurand</a></p>
-                            </li>
-                            <li>
-                                <p><i class="fa fa-twitter"></i><a href="https://twitter.com/couac" title="twitter">twitter.com/couac</a></p>
-                            </li>
-                        </ul>
                     </script>
                 </section>
             </div>

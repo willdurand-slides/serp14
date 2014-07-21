@@ -22,8 +22,36 @@ p.left {
     text-align: left !important;
 }
 
-/*
 .slides h2 {
     margin-bottom: 6%;
 }
-*/
+
+.title {
+    margin-top: 5% !important;
+    margin-bottom: 4% !important;
+    font-size: 280% !important;
+}
+
+.subtitle {
+    font-size: 90% !important;
+}
+
+.sponsors {
+    margin: 10% auto !important;
+}
+
+.sponsors img {
+    margin: 0 1% 0 1% !important;
+}
+
+.lavillenie {
+    transform: rotate(-10deg);
+    -webkit-transform: rotate(-10deg);
+    -moz-transform: rotate(-10deg);
+}
+
+.michelin-hq {
+    transform: rotate(5deg);
+    -webkit-transform: rotate(5deg);
+    -moz-transform: rotate(5deg);
+}
