@@ -1,6 +1,9 @@
 Domain-Driven Model Inference Applied To Web Applications
 =========================================================
 
+    $ git clone git://github.com/willdurand/serp14-slides.git --recursive
+    $ open index.html
+
 ### Abstract
 
 Model inference methods are attracting increased attention from industrials and researchers since
